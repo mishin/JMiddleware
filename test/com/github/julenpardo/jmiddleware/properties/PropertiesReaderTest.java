@@ -55,6 +55,8 @@ public class PropertiesReaderTest {
       fail("No exception should be thrown.");
     } catch (IOException e) {
       fail("No exception should be thrown.");
+    } catch (InvalidPropertiesException e) {
+      fail("No exception should be thrown.");
     }
   }
 
