@@ -1,11 +1,14 @@
 package com.github.julenpardo.jmiddleware.properties;
 
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
 public class PropertiesChecker {
 
   final public static int MINIMUM_PORT = 1025;
   final public static int MAXIMUM_PORT = 65535;
   final public static int MINIMUM_MULTICAST_FIRST_OCTECT = 224;
-  final public static int MAXIMUM_MULTICAST_FIRST_OCTECT = 240;
+  final public static int MAXIMUM_MULTICAST_FIRST_OCTECT = 239;
 
   public static void checkMode(byte mode) throws InvalidPropertiesException {
     if (mode != 1) {
@@ -29,7 +32,7 @@ public class PropertiesChecker {
     String octect;
     int octectNumber;
 
-    octects = multicastIp.split(".");
+    octects = multicastIp.split(Pattern.quote("."));
 
     invalidMulticastIp = octects.length != 4;
     if (invalidMulticastIp) {

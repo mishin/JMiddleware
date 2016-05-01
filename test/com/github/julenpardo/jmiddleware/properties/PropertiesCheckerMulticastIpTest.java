@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import java.io.Console;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -24,8 +25,9 @@ public class PropertiesCheckerMulticastIpTest {
             {"239.255.255.254", false},
             {"223.255.255.255", true},
             {"220.0.0.0", true},
-            {"239.255.255.255", true},
+            {"240.0.0.0", true},
             {"250.0.0.0", true},
+            {"239.0.0", true},
     };
 
     return Arrays.asList(data);
