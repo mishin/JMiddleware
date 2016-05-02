@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +73,26 @@ public class PropertiesReaderTest {
     } catch (InvalidPropertiesException e) {
       fail("No exception should be thrown.");
     }
+  }
+
+  @Test
+  public void parseTopicsTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
+          FileNotFoundException {
+    PropertiesReader propertiesReader = new PropertiesReader();
+    String input = "12,3,65, 10 , 5";
+    ArrayList<Integer> expecteds = new ArrayList<Integer>();
+    expecteds.add(12);
+    expecteds.add(3);
+    expecteds.add(65);
+    expecteds.add(10);
+    expecteds.add(5);
+
+    Method method = PropertiesReader.class.getDeclaredMethod("parseTopics", String.class);
+    method.setAccessible(true);
+
+    ArrayList<Integer> actuals = (ArrayList<Integer>) method.invoke(propertiesReader, input);
+
+    assertArrayEquals(expecteds.toArray(), actuals.toArray());
   }
 
 }

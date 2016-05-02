@@ -10,11 +10,11 @@ import java.util.Collection;
 import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
-public class PropertiesCheckerModeTest {
+public class PropertiesCheckerUserModeTest {
 
   private byte input;
 
-  public PropertiesCheckerModeTest(byte input) {
+  public PropertiesCheckerUserModeTest(byte input) {
     this.input = input;
   }
 
