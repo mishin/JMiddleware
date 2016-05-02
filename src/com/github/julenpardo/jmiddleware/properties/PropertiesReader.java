@@ -2,25 +2,29 @@ package com.github.julenpardo.jmiddleware.properties;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Properties;
 
 public class PropertiesReader {
 
-  public final static String PROPERTIES_FILENAME = "config.properties";
-  public final static String PROPERTIES_USER_MODE = "userMode";
-  public final static String PROPERTIES_SOCKET_MODE = "socketMode";
-  public final static String PROPERTIES_TOPICS = "topics";
-  public final static String PROPERTIES_PORT = "port";
-  public final static String PROPERTIES_MULTICAST_IP = "multicastIp";
-  public final static String TOPICS_DELIMITER = ",";
+  public static final String PROPERTIES_FILENAME = "config.properties";
+  public static final String PROPERTIES_USER_MODE = "userMode";
+  public static final String PROPERTIES_SOCKET_MODE = "socketMode";
+  public static final String PROPERTIES_TOPICS = "topics";
+  public static final String PROPERTIES_PORT = "port";
+  public static final String PROPERTIES_MULTICAST_IP = "multicastIp";
+  public static final String TOPICS_DELIMITER = ",";
 
   private Properties properties;
   private InputStream input;
 
+  /**
+   * PropertiesReader constructor.
+   * @throws FileNotFoundException If an exception occurs with the file input stream.
+   */
   public PropertiesReader() throws FileNotFoundException {
     this.properties = new Properties();
     this.input = new FileInputStream(this.PROPERTIES_FILENAME);
@@ -33,7 +37,6 @@ public class PropertiesReader {
    *  - Topic list.
    *  - Port.
    *  - Multicast IP.
-   *
    * Then, every property is checked to ensure that they are correctly defined. And, if yes,
    * a Configuration object that holds the read information is created and returned.
    *
@@ -43,7 +46,8 @@ public class PropertiesReader {
    */
   public Configuration readProperties() throws IOException, InvalidPropertiesException {
     Configuration configuration;
-    byte userMode, socketMode;
+    byte userMode;
+    byte socketMode;
     String topics;
     ArrayList<Integer> topicList;
     int port;

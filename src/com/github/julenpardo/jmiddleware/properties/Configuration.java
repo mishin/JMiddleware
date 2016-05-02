@@ -11,13 +11,28 @@ public class Configuration {
   private int port;
   private InetAddress multicastIp;
 
+  /**
+   * Configuration empty constructor.
+   */
   public Configuration() {
     this.userMode = 0;
+    this.socketMode = 0;
+    this.topics = new ArrayList<Integer>();
     this.port = 0;
     this.multicastIp = null;
   }
 
-  public Configuration(byte userMode, byte socketMode, ArrayList<Integer> topics, int port, InetAddress multicastIp) {
+  /**
+   * Configuration constructor.
+   *
+   * @param userMode The user mode read from properties.
+   * @param socketMode The socket mode read from properties.
+   * @param topics The topic list read from properties.
+   * @param port The port read from properties.
+   * @param multicastIp The multicast IP read from properties.
+   */
+  public Configuration(byte userMode, byte socketMode, ArrayList<Integer> topics, int port,
+                       InetAddress multicastIp) {
     this.userMode = userMode;
     this.socketMode = socketMode;
     this.topics = topics;
