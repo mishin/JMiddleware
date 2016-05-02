@@ -1,4 +1,4 @@
-package com.github.julenpardo.jmiddleware.com.github.julenpardo.jmiddleware.packetconstructor;
+package com.github.julenpardo.jmiddleware.packetconstructor;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -108,7 +108,7 @@ public class PacketConstructor {
    * @return The data length of the packet.
    * @throws InvalidPacketException If the given packet is invalid.
    */
-  public static byte getDataLength(byte[] packet) throws InvalidPacketException {
+  public static int getDataLength(byte[] packet) throws InvalidPacketException {
     if (!isPacketValid(packet)) {
       throw new InvalidPacketException();
     }
@@ -123,7 +123,7 @@ public class PacketConstructor {
    * @return The topic defined in the packet.
    * @throws InvalidPacketException If the given packet is invalid.
    */
-  public static byte getTopic(byte[] packet) throws InvalidPacketException {
+  public static int getTopic(byte[] packet) throws InvalidPacketException {
     if (!isPacketValid(packet)) {
       throw new InvalidPacketException();
     }

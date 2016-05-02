@@ -1,4 +1,4 @@
-package com.github.julenpardo.jmiddleware.com.github.julenpardo.jmiddleware.packetconstructor;
+package com.github.julenpardo.jmiddleware.packetconstructor;
 
 public class InvalidPacketException extends Exception {
 
