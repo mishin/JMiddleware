@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class PropertiesReader {
@@ -12,8 +13,10 @@ public class PropertiesReader {
   public final static String PROPERTIES_FILENAME = "config.properties";
   public final static String PROPERTIES_USER_MODE = "userMode";
   public final static String PROPERTIES_SOCKET_MODE = "socketMode";
+  public final static String PROPERTIES_TOPICS = "topics";
   public final static String PROPERTIES_PORT = "port";
   public final static String PROPERTIES_MULTICAST_IP = "multicastIp";
+  public final static String TOPICS_DELIMITER = ",";
 
   private Properties properties;
   private InputStream input;
@@ -27,6 +30,7 @@ public class PropertiesReader {
    * Reads the properties file, looking for the following properties:
    *  - User mode (subscriber/publisher).
    *  - Socket mode (default only for the moment).
+   *  - Topic list.
    *  - Port.
    *  - Multicast IP.
    *
@@ -40,6 +44,8 @@ public class PropertiesReader {
   public Configuration readProperties() throws IOException, InvalidPropertiesException {
     Configuration configuration;
     byte userMode, socketMode;
+    String topics;
+    ArrayList<Integer> topicList;
     int port;
     InetAddress multicastIp;
 
@@ -47,16 +53,43 @@ public class PropertiesReader {
 
     userMode = Byte.parseByte(this.properties.getProperty(this.PROPERTIES_USER_MODE));
     socketMode = Byte.parseByte(this.properties.getProperty(this.PROPERTIES_SOCKET_MODE));
+    topics = this.properties.getProperty(this.PROPERTIES_TOPICS);
+    topicList = this.parseTopics(topics);
     port = Integer.parseInt(this.properties.getProperty(this.PROPERTIES_PORT));
     multicastIp = InetAddress.getByName(this.properties.getProperty(this.PROPERTIES_MULTICAST_IP));
 
     PropertiesChecker.checkUserMode(userMode);
+    PropertiesChecker.checkSocketMode(socketMode);
     PropertiesChecker.checkPort(port);
     PropertiesChecker.checkMulticastIp(multicastIp.getHostName());
 
-    configuration = new Configuration(userMode, socketMode, port, multicastIp);
+    configuration = new Configuration(userMode, socketMode, topicList, port, multicastIp);
 
     return configuration;
+  }
+
+  /**
+   * Creates a list of topics, from the string with the topics separated by commas read from
+   * the properties file.
+   * Before splitting the string, the whitespaces are removed, just in case.
+   *
+   * @param readTopics The topics string separated by comma read from properties file.
+   * @return ArrayList<Integer> A list with all the topics.
+   */
+  private ArrayList<Integer> parseTopics(String readTopics) {
+    ArrayList<Integer> topics = new ArrayList<Integer>();
+    String[] splitedTopics;
+    int parsedTopic;
+
+    readTopics = readTopics.replaceAll("\\s", "");
+    splitedTopics = readTopics.split(this.TOPICS_DELIMITER);
+
+    for (String topic : splitedTopics) {
+      parsedTopic = Integer.parseInt(topic);
+      topics.add(parsedTopic);
+    }
+
+    return topics;
   }
 
 }

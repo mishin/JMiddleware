@@ -1,11 +1,13 @@
 package com.github.julenpardo.jmiddleware.properties;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 
 public class Configuration {
 
   private byte userMode;
   private byte socketMode;
+  private ArrayList<Integer> topics;
   private int port;
   private InetAddress multicastIp;
 
@@ -15,9 +17,10 @@ public class Configuration {
     this.multicastIp = null;
   }
 
-  public Configuration(byte userMode, byte socketMode, int port, InetAddress multicastIp) {
+  public Configuration(byte userMode, byte socketMode, ArrayList<Integer> topics, int port, InetAddress multicastIp) {
     this.userMode = userMode;
     this.socketMode = socketMode;
+    this.topics = topics;
     this.port = port;
     this.multicastIp = multicastIp;
   }
@@ -36,6 +39,14 @@ public class Configuration {
 
   public void setSocketMode(byte socketMode) {
     this.socketMode = socketMode;
+  }
+
+  public ArrayList<Integer> getTopics() {
+    return topics;
+  }
+
+  public void setTopics(ArrayList<Integer> topics) {
+    this.topics = topics;
   }
 
   public int getPort() {
