@@ -32,23 +32,26 @@ public class PropertiesReaderTest {
     Configuration configuration;
 
     try {
-      byte expectedMode = 1;
+      byte expectedUserMode = 1;
+      byte expectedSocketMode = 1;
       int expectedPort = 5000;
       InetAddress expectedMulticastIp = InetAddress.getByName("233.0.0.0");
 
-      properties.put("mode", String.valueOf(expectedMode));
-      properties.put("port", String.valueOf(expectedPort));
-      properties.put("multicastIp", expectedMulticastIp.getHostName());
+      properties.put(PropertiesReader.PROPERTIES_USER_MODE, String.valueOf(expectedUserMode));
+      properties.put(PropertiesReader.PROPERTIES_SOCKET_MODE, String.valueOf(expectedSocketMode));
+      properties.put(PropertiesReader.PROPERTIES_PORT, String.valueOf(expectedPort));
+      properties.put(PropertiesReader.PROPERTIES_MULTICAST_IP, expectedMulticastIp.getHostName());
 
       generator.createPropertiesFile(filename, properties);
       propertiesReader = new PropertiesReader();
       configuration = propertiesReader.readProperties();
 
-      byte actualMode = configuration.getMode();
+      byte actualMode = configuration.getUserMode();
       int actualPort = configuration.getPort();
       InetAddress actualMulticastIp = configuration.getMulticastIp();
 
-      assertEquals(expectedMode, actualMode);
+      assertEquals(expectedUserMode, actualMode);
+      assertEquals(expectedSocketMode, actualMode);
       assertEquals(expectedPort, actualPort);
       assertEquals(expectedMulticastIp.getHostName(), actualMulticastIp.getHostName());
     } catch (FileNotFoundException e) {

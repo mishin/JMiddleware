@@ -4,28 +4,38 @@ import java.net.InetAddress;
 
 public class Configuration {
 
-  private byte mode;
+  private byte userMode;
+  private byte socketMode;
   private int port;
   private InetAddress multicastIp;
 
   public Configuration() {
-    this.mode = 0;
+    this.userMode = 0;
     this.port = 0;
     this.multicastIp = null;
   }
 
-  public Configuration(byte mode, int port, InetAddress multicastIp) {
-    this.mode = mode;
+  public Configuration(byte userMode, byte socketMode, int port, InetAddress multicastIp) {
+    this.userMode = userMode;
+    this.socketMode = socketMode;
     this.port = port;
     this.multicastIp = multicastIp;
   }
 
-  public byte getMode() {
-    return mode;
+  public byte getUserMode() {
+    return userMode;
   }
 
-  public void setMode(byte mode) {
-    this.mode = mode;
+  public void setUserMode(byte userMode) {
+    this.userMode = userMode;
+  }
+
+  public byte getSocketMode() {
+    return socketMode;
+  }
+
+  public void setSocketMode(byte socketMode) {
+    this.socketMode = socketMode;
   }
 
   public int getPort() {

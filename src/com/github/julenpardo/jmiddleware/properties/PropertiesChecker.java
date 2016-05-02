@@ -10,13 +10,24 @@ public class PropertiesChecker {
   final public static int MAXIMUM_MULTICAST_FIRST_OCTECT = 239;
 
   /**
-   * Checks the middleware mode provided in the properties file.
-   * @param mode The mode read in the properties.
+   * Checks the middleware user mode provided in the properties file.
+   * @param userMode The mode read in the properties.
    * @throws InvalidPropertiesException If the mode of the properties does not match any valid modes.
    */
-  public static void checkMode(byte mode) throws InvalidPropertiesException {
-    if (mode != 1) {
-      throw new InvalidPropertiesException("Mode");
+  public static void checkUserMode(byte userMode) throws InvalidPropertiesException {
+    if (userMode != 1) {
+      throw new InvalidPropertiesException("User mode");
+    }
+  }
+
+  /**
+   * Checks the middleware socket mode provided in the properties file.
+   * @param socketMode The mode read in the properties.
+   * @throws InvalidPropertiesException If the mode of the properties does not match any valid modes.
+   */
+  public static void checkSocketMode(byte socketMode) throws InvalidPropertiesException {
+    if (socketMode != 1) {
+      throw new InvalidPropertiesException("Socket mode");
     }
   }
 

@@ -10,11 +10,11 @@ import java.util.Collection;
 import static org.junit.Assert.fail;
 
 @RunWith(Parameterized.class)
-public class PropertiesCheckerModeTest {
+public class PropertiesCheckerSocketModeTest {
 
   private byte input;
 
-  public PropertiesCheckerModeTest(byte input) {
+  public PropertiesCheckerSocketModeTest(byte input) {
     this.input = input;
   }
 
@@ -26,18 +26,18 @@ public class PropertiesCheckerModeTest {
   }
 
   @Test
-  public void checkModeTest() {
+  public void checkSocketTest() {
     byte input = 1;
 
     try {
-      PropertiesChecker.checkUserMode(input);
+      PropertiesChecker.checkSocketMode(input);
     } catch (InvalidPropertiesException e) {
       fail("No exception should be thrown.");
     }
   }
 
   @Test(expected = InvalidPropertiesException.class)
-  public void checkModeTestInvalidPropertiesException() throws InvalidPropertiesException {
-    PropertiesChecker.checkUserMode(this.input);
+  public void checkSocketModeTestInvalidPropertiesException() throws InvalidPropertiesException {
+    PropertiesChecker.checkSocketMode(this.input);
   }
 }

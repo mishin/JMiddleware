@@ -10,6 +10,10 @@ import java.util.Properties;
 public class PropertiesReader {
 
   public final static String PROPERTIES_FILENAME = "config.properties";
+  public final static String PROPERTIES_USER_MODE = "userMode";
+  public final static String PROPERTIES_SOCKET_MODE = "socketMode";
+  public final static String PROPERTIES_PORT = "port";
+  public final static String PROPERTIES_MULTICAST_IP = "multicastIp";
 
   private Properties properties;
   private InputStream input;
@@ -21,7 +25,8 @@ public class PropertiesReader {
 
   /**
    * Reads the properties file, looking for the following properties:
-   *  - Middleware mode.
+   *  - User mode (subscriber/publisher).
+   *  - Socket mode (default only for the moment).
    *  - Port.
    *  - Multicast IP.
    *
@@ -34,21 +39,22 @@ public class PropertiesReader {
    */
   public Configuration readProperties() throws IOException, InvalidPropertiesException {
     Configuration configuration;
-    byte mode;
+    byte userMode, socketMode;
     int port;
     InetAddress multicastIp;
 
     this.properties.load(this.input);
 
-    mode = Byte.parseByte(this.properties.getProperty("mode"));
-    port = Integer.parseInt(this.properties.getProperty("port"));
-    multicastIp = InetAddress.getByName(this.properties.getProperty("multicastIp"));
+    userMode = Byte.parseByte(this.properties.getProperty(this.PROPERTIES_USER_MODE));
+    socketMode = Byte.parseByte(this.properties.getProperty(this.PROPERTIES_SOCKET_MODE));
+    port = Integer.parseInt(this.properties.getProperty(this.PROPERTIES_PORT));
+    multicastIp = InetAddress.getByName(this.properties.getProperty(this.PROPERTIES_MULTICAST_IP));
 
-    PropertiesChecker.checkMode(mode);
+    PropertiesChecker.checkUserMode(userMode);
     PropertiesChecker.checkPort(port);
     PropertiesChecker.checkMulticastIp(multicastIp.getHostName());
 
-    configuration = new Configuration(mode, port, multicastIp);
+    configuration = new Configuration(userMode, socketMode, port, multicastIp);
 
     return configuration;
   }
