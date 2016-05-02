@@ -109,11 +109,20 @@ public class PacketConstructor {
    * @throws InvalidPacketException If the given packet is invalid.
    */
   public static int getDataLength(byte[] packet) throws InvalidPacketException {
+    byte[] lengthBytes = new byte[DATA_LENGTH_IN_BYTES];
+    int length;
+
     if (!isPacketValid(packet)) {
       throw new InvalidPacketException();
     }
 
-    return packet[DATA_LENGTH_POSITION];
+    for (int index = 0; index < lengthBytes.length; index++) {
+      lengthBytes[index] = packet[DATA_LENGTH_POSITION + index];
+    }
+
+    length = ByteBuffer.wrap(lengthBytes).getInt();
+
+    return length;
   }
 
   /**
@@ -124,11 +133,20 @@ public class PacketConstructor {
    * @throws InvalidPacketException If the given packet is invalid.
    */
   public static int getTopic(byte[] packet) throws InvalidPacketException {
+    byte[] topicBytes = new byte[TOPIC_LENGTH_IN_BYTES];
+    int topic;
+
     if (!isPacketValid(packet)) {
       throw new InvalidPacketException();
     }
 
-    return packet[TOPIC_POSITION];
+    for (int index = 0; index < topicBytes.length; index++) {
+      topicBytes[index] = packet[TOPIC_POSITION + index];
+    }
+
+    topic = ByteBuffer.wrap(topicBytes).getInt();
+
+    return topic;
   }
 
   /**
@@ -138,12 +156,19 @@ public class PacketConstructor {
    * @return The data of the packet.
    * @throws InvalidPacketException If the given packet is invalid.
    */
-  public static byte getData(byte[] packet) throws InvalidPacketException {
+  public static byte[] getData(byte[] packet) throws InvalidPacketException {
+    int dataLength = getDataLength(packet);
+    byte[] data = new byte[dataLength];
+
     if (!isPacketValid(packet)) {
       throw new InvalidPacketException();
     }
 
-    return packet[DATA_POSITION];
+    for (int index = 0; index < data.length; index++) {
+      data[index] = packet[DATA_POSITION + index];
+    }
+
+    return data;
   }
 
 }

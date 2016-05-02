@@ -182,9 +182,9 @@ public class PacketConstructorTest {
     byte[] expected = data;
 
     try {
-      byte actual = PacketConstructor.getData(inputPacket);
+      byte[] actual = PacketConstructor.getData(inputPacket);
 
-      assertEquals(expected, actual);
+      assertEquals(new String(expected), new String(actual));
     } catch (InvalidPacketException e) {
       fail("No exception should be thrown.");
     }
