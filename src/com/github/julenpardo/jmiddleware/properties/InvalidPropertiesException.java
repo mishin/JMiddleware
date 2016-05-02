@@ -5,7 +5,7 @@ package com.github.julenpardo.jmiddleware.properties;
  */
 public class InvalidPropertiesException extends Exception {
 
-  final public static String DEFAULT_MESSAGE = "Invalid property defined for: ";
+  public static final String DEFAULT_MESSAGE = "Invalid property defined for: ";
 
   public InvalidPropertiesException(String invalidProperty) {
     super(DEFAULT_MESSAGE + invalidProperty);

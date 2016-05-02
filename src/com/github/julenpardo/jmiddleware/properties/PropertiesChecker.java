@@ -4,19 +4,32 @@ import java.util.regex.Pattern;
 
 public class PropertiesChecker {
 
-  final public static int MINIMUM_PORT = 1025;
-  final public static int MAXIMUM_PORT = 65535;
-  final public static int MINIMUM_MULTICAST_FIRST_OCTECT = 224;
-  final public static int MAXIMUM_MULTICAST_FIRST_OCTECT = 239;
+  public static final int MINIMUM_PORT = 1025;
+  public static final int MAXIMUM_PORT = 65535;
+  public static final int MINIMUM_MULTICAST_FIRST_OCTECT = 224;
+  public static final int MAXIMUM_MULTICAST_FIRST_OCTECT = 239;
 
   /**
-   * Checks the middleware mode provided in the properties file.
-   * @param mode The mode read in the properties.
-   * @throws InvalidPropertiesException If the mode of the properties does not match any valid modes.
+   * Checks the middleware user mode provided in the properties file.
+   * @param userMode The mode read in the properties.
+   * @throws InvalidPropertiesException If the mode of the properties does not match any valid
+   *     modes.
    */
-  public static void checkMode(byte mode) throws InvalidPropertiesException {
-    if (mode != 1) {
-      throw new InvalidPropertiesException("Mode");
+  public static void checkUserMode(byte userMode) throws InvalidPropertiesException {
+    if (userMode != 1) {
+      throw new InvalidPropertiesException("User mode");
+    }
+  }
+
+  /**
+   * Checks the middleware socket mode provided in the properties file.
+   * @param socketMode The mode read in the properties.
+   * @throws InvalidPropertiesException If the mode of the properties does not match any valid
+   *     modes.
+   */
+  public static void checkSocketMode(byte socketMode) throws InvalidPropertiesException {
+    if (socketMode != 1) {
+      throw new InvalidPropertiesException("Socket mode");
     }
   }
 
@@ -25,7 +38,8 @@ public class PropertiesChecker {
    * must be in the following range: [1025, 65535]; from the first port not defined by IANA, to the
    * maximum port available.
    * @param port The port read in the properties.
-   * @throws InvalidPropertiesException If the port of the properties is not between the valid port range.
+   * @throws InvalidPropertiesException If the port of the properties is not between the valid
+   *     port range.
    */
   public static void checkPort(int port) throws InvalidPropertiesException {
     boolean invalidPort;
@@ -40,10 +54,8 @@ public class PropertiesChecker {
   /**
    * Checks the multicast IP provided in the properties files. To be considered as valid, the IP
    * must be in the defined port range for Multicast: [224.0.0.0, 239.255.255.254].
-   *
    * The first obvious step is to check that the provided IP has four octects, splitting the IP
    * by dot (must be escaped, because the "split" method takes it as regular expression pattern).
-   *
    * Then, the most significant octet must be checked, because is the one with the smallest valid
    * range. The remaining three octects don't need any special check.
    *
@@ -76,9 +88,9 @@ public class PropertiesChecker {
   }
 
   /**
-   * Makes the check of the octects of the multicast IP read in the properties file. The first octect
-   * needs different check since its range is smaller, but the remaining three do not need any special
-   * check.
+   * Makes the check of the octects of the multicast IP read in the properties file. The first
+   * octect needs different check since its range is smaller, but the remaining three do not need
+   * any special check.
    *
    * @param octect The octect of the IP.
    * @param octectNumber The number of the octect [1, 4].
@@ -91,7 +103,8 @@ public class PropertiesChecker {
     octectInteger = Integer.parseInt(octect);
 
     if (octectNumber == 1) {
-      invalidOctect = octectInteger < MINIMUM_MULTICAST_FIRST_OCTECT || octectInteger > MAXIMUM_MULTICAST_FIRST_OCTECT;
+      invalidOctect = octectInteger < MINIMUM_MULTICAST_FIRST_OCTECT
+              || octectInteger > MAXIMUM_MULTICAST_FIRST_OCTECT;
     } else {
       invalidOctect = octectInteger < 0 || octectInteger > 255;
     }
