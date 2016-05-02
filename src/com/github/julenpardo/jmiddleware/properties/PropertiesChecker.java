@@ -13,7 +13,7 @@ public class PropertiesChecker {
    * Checks the middleware user mode provided in the properties file.
    * @param userMode The mode read in the properties.
    * @throws InvalidPropertiesException If the mode of the properties does not match any valid
-   * modes.
+   *     modes.
    */
   public static void checkUserMode(byte userMode) throws InvalidPropertiesException {
     if (userMode != 1) {
@@ -25,7 +25,7 @@ public class PropertiesChecker {
    * Checks the middleware socket mode provided in the properties file.
    * @param socketMode The mode read in the properties.
    * @throws InvalidPropertiesException If the mode of the properties does not match any valid
-   * modes.
+   *     modes.
    */
   public static void checkSocketMode(byte socketMode) throws InvalidPropertiesException {
     if (socketMode != 1) {
@@ -39,7 +39,7 @@ public class PropertiesChecker {
    * maximum port available.
    * @param port The port read in the properties.
    * @throws InvalidPropertiesException If the port of the properties is not between the valid
-   * port range.
+   *     port range.
    */
   public static void checkPort(int port) throws InvalidPropertiesException {
     boolean invalidPort;
@@ -104,7 +104,7 @@ public class PropertiesChecker {
 
     if (octectNumber == 1) {
       invalidOctect = octectInteger < MINIMUM_MULTICAST_FIRST_OCTECT
-              || octectInteger> MAXIMUM_MULTICAST_FIRST_OCTECT;
+              || octectInteger > MAXIMUM_MULTICAST_FIRST_OCTECT;
     } else {
       invalidOctect = octectInteger < 0 || octectInteger > 255;
     }

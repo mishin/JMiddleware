@@ -1,8 +1,8 @@
 package com.github.julenpardo.jmiddleware.properties;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class PropertiesReader {
    * Before splitting the string, the whitespaces are removed, just in case.
    *
    * @param readTopics The topics string separated by comma read from properties file.
-   * @return ArrayList<Integer> A list with all the topics.
+   * @return ArrayList\<Integer\> A list with all the topics.
    */
   private ArrayList<Integer> parseTopics(String readTopics) {
     ArrayList<Integer> topics = new ArrayList<Integer>();
