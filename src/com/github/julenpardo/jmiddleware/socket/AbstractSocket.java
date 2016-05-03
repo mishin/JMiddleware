@@ -6,14 +6,15 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public abstract class AbstractSocket extends MulticastSocket {
 
-  private byte userType;
-  private byte socketType;
-  private ArrayList<Integer> topics;
-  private int port;
-  private InetAddress multicastIp;
+  protected byte userType;
+  protected byte socketType;
+  protected ArrayList<Integer> topics;
+  protected int port;
+  protected InetAddress multicastIp;
 
   /**
    * AbstractSocket constructor.
@@ -36,12 +37,36 @@ public abstract class AbstractSocket extends MulticastSocket {
   }
 
   /**
+   * Checks if the provided topic is in the list of subscribed topics, to avoid sending/receiving
+   * packets belonging to topics that the user is not subscribed to.
+   *
+   * @param topic The topic to check the subscription.
+   * @return True if it the provided topic is in the subscription topic list; false if it is not.
+   */
+  protected boolean isSubscribedToTopic(int topic) {
+    Iterator<Integer> iterator = this.topics.iterator();
+    int topicInList;
+    boolean subscribed = false;
+
+    while (iterator.hasNext()) {
+      topicInList = iterator.next();
+
+      if (topicInList == topic) {
+        subscribed = true;
+        break;
+      }
+    }
+
+    return subscribed;
+  }
+
+  /**
    * Publishes the given data for the given topic.
    *
    * @param topic The topic the data will be published for.
    * @param data The data to send.
    */
-  public abstract void sendData(int topic, byte[] data);
+  public abstract void sendData(int topic, byte[] data) throws NotSubscribedToTopicException, IOException;
 
   /**
    * The data received for the subscribed topics.
