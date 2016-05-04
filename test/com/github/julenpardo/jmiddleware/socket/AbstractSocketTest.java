@@ -27,8 +27,8 @@ public class AbstractSocketTest {
     }
 
     @Override
-    public void receiveData(DatagramPacket data) {
-
+    public byte[] receiveData() {
+      return null;
     }
   }
 

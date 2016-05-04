@@ -1,5 +1,6 @@
 package com.github.julenpardo.jmiddleware.socket;
 
+import com.github.julenpardo.jmiddleware.packetconstructor.InvalidPacketException;
 import com.github.julenpardo.jmiddleware.packetconstructor.PacketConstructor;
 
 import java.io.IOException;
@@ -50,12 +51,41 @@ public class LatencySocket extends AbstractSocket {
   }
 
   /**
-   * The data received for the subscribed topics.
+   * Receives the data from the multicast socket. The receiving is blocking; the flow won't
+   * continue until a packet is received.
+   * The received packet must belong to one of the topics the subscriber receiving the data is
+   * subscribed to. If a message of a non-subscribed topic is received, it will be ignored and
+   * the loop will continue as if nothing happened.
    *
-   * @param data Received data.
+   * @return The byte array with received data.
+   * @throws IOException
    */
   @Override
-  public void receiveData(DatagramPacket data) {
+  public byte[] receiveData() throws IOException {
+    byte[] buffer = new byte[super.BUFFER_SIZE];
+    DatagramPacket receivedPacket = new DatagramPacket(buffer, buffer.length);
+    byte[] receivedData = null;
+    int topic;
+    boolean isSubscribedTopic = false;
 
+    do {
+      super.receive(receivedPacket);
+
+      try {
+        topic = PacketConstructor.getTopic(receivedPacket.getData());
+
+        isSubscribedTopic = super.isSubscribedToTopic(topic);
+
+        if (isSubscribedTopic) {
+          receivedData = PacketConstructor.getData(receivedPacket.getData());
+        }
+
+      } catch (InvalidPacketException e) {
+        isSubscribedTopic = false;
+      }
+    } while (!isSubscribedTopic);
+
+    return receivedData;
   }
+
 }

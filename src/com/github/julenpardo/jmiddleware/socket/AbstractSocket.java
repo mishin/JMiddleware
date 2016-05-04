@@ -10,6 +10,8 @@ import java.util.Iterator;
 
 public abstract class AbstractSocket extends MulticastSocket {
 
+  protected static final int BUFFER_SIZE = 10240;
+
   protected byte userType;
   protected byte socketType;
   protected ArrayList<Integer> topics;
@@ -71,8 +73,8 @@ public abstract class AbstractSocket extends MulticastSocket {
   /**
    * The data received for the subscribed topics.
    *
-   * @param data Received data.
+   * @return The byte array with recived data.
    */
-  public abstract void receiveData(DatagramPacket data);
+  public abstract byte[] receiveData() throws IOException;
 
 }
