@@ -19,7 +19,8 @@ public class LatencySocket extends AbstractSocket {
    * @param multicastIp Multicast IP read from properties.
    * @throws IOException Thrown by super MulticastSocket constructor.
    */
-  public LatencySocket(byte userType, byte socketType, ArrayList<Integer> topics, int port, InetAddress multicastIp) throws IOException {
+  public LatencySocket(byte userType, byte socketType, ArrayList<Integer> topics, int port,
+                       InetAddress multicastIp) throws IOException {
     super(userType, socketType, topics, port, multicastIp);
   }
 
