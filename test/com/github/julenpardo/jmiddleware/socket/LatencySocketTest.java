@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class LatencySocketTest {
 
-  @Test(timeout = 10000)
+  @Test(timeout = 25000)
   public void testSendData() throws IOException, NotSubscribedToTopicException,
           InterruptedException, InvalidPacketException {
     byte userType = 1;
@@ -31,7 +31,7 @@ public class LatencySocketTest {
 
     latencySocket = new LatencySocket(userType, socketType, topics, port, multicastIp);
 
-    ListeningSocket listeningSocket = new ListeningSocket(port, multicastIp, 5000);
+    ListeningSocket listeningSocket = new ListeningSocket(port, multicastIp, 15000);
     listeningSocket.start();
 
     latencySocket.sendData(inputTopic, inputData);
@@ -60,6 +60,45 @@ public class LatencySocketTest {
     assertEquals(expectedSocketType, actualSocketType);
     assertEquals(expectedTopic, actualTopic);
     assertEquals(expectedDataLength, actualDataLength);
+    assertEquals(new String(expectedData), new String(actualData));
+  }
+
+  @Test(timeout = 25000)
+  public void testReceiveData() throws IOException, InterruptedException {
+    byte userType = 1;
+    byte socketType = 1;
+    ArrayList<Integer> topics = new ArrayList<Integer>() ;
+    int port = 60000;
+    InetAddress multicastIp = InetAddress.getByName("224.0.0.1");
+    MulticastSocket multicastSocket;
+
+    multicastSocket = new MulticastSocket(port);
+    multicastSocket.joinGroup(multicastIp);
+
+    topics.add(65);
+    topics.add(155410);
+    topics.add(7555);
+
+    int inputTopic = topics.get(1);
+    byte[] messageData = "Testing receive data".getBytes();
+    byte[] data = PacketConstructor.createPacket(socketType, userType, inputTopic, messageData);
+    DatagramPacket packet = new DatagramPacket(data, data.length, multicastIp, port);
+
+    ListeningLatencySocket listeningLatencySocket = new ListeningLatencySocket(userType,
+            socketType, topics, port, multicastIp, 15000);
+    listeningLatencySocket.start();
+
+    multicastSocket.send(packet);
+
+    listeningLatencySocket.join();
+
+    // We set the expected values...
+    byte[] expectedData = messageData;
+
+    // We retrieve the actual received data...
+    byte[] actualData = listeningLatencySocket.getReceivedData();
+
+    // And we do the assertion.
     assertEquals(new String(expectedData), new String(actualData));
   }
 
@@ -98,4 +137,37 @@ public class LatencySocketTest {
       }
     }
   }
+
+  private class ListeningLatencySocket extends Thread {
+    private LatencySocket latencySocket;
+    private int timeout;
+    private byte[] receivedData;
+
+    public ListeningLatencySocket(byte userType, byte socketType, ArrayList<Integer> topics,
+                                        int port, InetAddress multicastIp, int timeout) {
+      try {
+        this.latencySocket = new LatencySocket(userType, socketType, topics, port, multicastIp);
+        this.timeout = timeout;
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    public byte[] getReceivedData() {
+      return receivedData;
+    }
+
+    @Override
+    public void run() {
+      try {
+        Thread.sleep(this.timeout);
+        this.receivedData = latencySocket.receiveData();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
 }

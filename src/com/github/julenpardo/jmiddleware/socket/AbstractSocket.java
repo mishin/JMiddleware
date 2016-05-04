@@ -36,6 +36,8 @@ public abstract class AbstractSocket extends MulticastSocket {
     this.topics = topics;
     this.port = port;
     this.multicastIp = multicastIp;
+
+    super.joinGroup(multicastIp);
   }
 
   /**
