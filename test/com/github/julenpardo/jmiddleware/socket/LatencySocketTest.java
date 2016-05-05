@@ -63,6 +63,29 @@ public class LatencySocketTest {
     assertEquals(new String(expectedData), new String(actualData));
   }
 
+  @Test(timeout = 35000, expected = NotSubscribedToTopicException.class)
+  public void testSendDataNotSubscribedToTopicException() throws IOException,
+          NotSubscribedToTopicException, InterruptedException, InvalidPacketException {
+    byte userType = 1;
+    byte socketType = 1;
+    ArrayList<Integer> topics = new ArrayList<Integer>() ;
+    int port = 60000;
+    InetAddress multicastIp = InetAddress.getByName("224.0.0.0");
+    LatencySocket latencySocket;
+
+    topics.add(1);
+    topics.add(10);
+    topics.add(100);
+
+    // We need a topic that is not in the subscription list, in order to fire the exception.
+    int inputTopic = -999;
+    byte[] inputData = "Testing send data with exception".getBytes();
+
+    latencySocket = new LatencySocket(userType, socketType, topics, port, multicastIp);
+
+    latencySocket.sendData(inputTopic, inputData);
+  }
+
   @Test(timeout = 35000)
   public void testReceiveData() throws IOException, InterruptedException {
     byte userType = 1;

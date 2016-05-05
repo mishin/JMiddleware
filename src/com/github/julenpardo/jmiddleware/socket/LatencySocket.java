@@ -33,13 +33,10 @@ public class LatencySocket extends AbstractSocket {
    */
   @Override
   public void sendData(int topic, byte[] data) throws NotSubscribedToTopicException, IOException {
-    boolean subscribedToTopic;
     byte[] packetData;
     DatagramPacket datagramPacket;
 
-    subscribedToTopic = super.isSubscribedToTopic(topic);
-
-    if (!subscribedToTopic) {
+    if (!super.isSubscribedToTopic(topic)) {
       throw new NotSubscribedToTopicException(NotSubscribedToTopicException.SENDING);
     }
 
@@ -58,7 +55,7 @@ public class LatencySocket extends AbstractSocket {
    * the loop will continue as if nothing happened.
    *
    * @return The byte array with received data.
-   * @throws IOException
+   * @throws IOException If an exception occurs receiving the packet.
    */
   @Override
   public byte[] receiveData() throws IOException {
@@ -80,7 +77,7 @@ public class LatencySocket extends AbstractSocket {
           receivedData = PacketConstructor.getData(receivedPacket.getData());
         }
 
-      } catch (InvalidPacketException e) {
+      } catch (InvalidPacketException exception) {
         isSubscribedTopic = false;
       }
     } while (!isSubscribedTopic);

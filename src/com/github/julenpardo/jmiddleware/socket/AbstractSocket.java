@@ -70,7 +70,8 @@ public abstract class AbstractSocket extends MulticastSocket {
    * @param topic The topic the data will be published for.
    * @param data The data to send.
    */
-  public abstract void sendData(int topic, byte[] data) throws NotSubscribedToTopicException, IOException;
+  public abstract void sendData(int topic, byte[] data) throws NotSubscribedToTopicException,
+          IOException;
 
   /**
    * The data received for the subscribed topics.
