@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class LatencySocketTest {
 
-  @Test(timeout = 25000)
+  @Test(timeout = 35000)
   public void testSendData() throws IOException, NotSubscribedToTopicException,
           InterruptedException, InvalidPacketException {
     byte userType = 1;
@@ -31,7 +31,7 @@ public class LatencySocketTest {
 
     latencySocket = new LatencySocket(userType, socketType, topics, port, multicastIp);
 
-    ListeningSocket listeningSocket = new ListeningSocket(port, multicastIp, 15000);
+    ListeningSocket listeningSocket = new ListeningSocket(port, multicastIp, 25000);
     listeningSocket.start();
 
     latencySocket.sendData(inputTopic, inputData);
@@ -63,7 +63,7 @@ public class LatencySocketTest {
     assertEquals(new String(expectedData), new String(actualData));
   }
 
-  @Test(timeout = 25000)
+  @Test(timeout = 35000)
   public void testReceiveData() throws IOException, InterruptedException {
     byte userType = 1;
     byte socketType = 1;
@@ -85,7 +85,7 @@ public class LatencySocketTest {
     DatagramPacket packet = new DatagramPacket(data, data.length, multicastIp, port);
 
     ListeningLatencySocket listeningLatencySocket = new ListeningLatencySocket(userType,
-            socketType, topics, port, multicastIp, 15000);
+            socketType, topics, port, multicastIp, 25000);
     listeningLatencySocket.start();
 
     multicastSocket.send(packet);
