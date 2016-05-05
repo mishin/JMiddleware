@@ -69,7 +69,7 @@ public class LatencySocketTest {
     byte socketType = 1;
     ArrayList<Integer> topics = new ArrayList<Integer>() ;
     int port = 60000;
-    InetAddress multicastIp = InetAddress.getByName("224.0.0.1");
+    InetAddress multicastIp = InetAddress.getByName("224.0.0.0");
     MulticastSocket multicastSocket;
 
     multicastSocket = new MulticastSocket(port);

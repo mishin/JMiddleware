@@ -46,7 +46,7 @@ public class AbstractSocketTest {
 
     int intputTopic = topics.get(3);
 
-    abstractSocket = new ConcreteSocket((byte)0, (byte)0, topics, 0, null);
+    abstractSocket = new ConcreteSocket((byte)0, (byte)0, topics, 0, InetAddress.getByName("224.0.0.0"));
     boolean actual = abstractSocket.isSubscribedToTopic(intputTopic);
 
     assertTrue(actual);
@@ -66,7 +66,7 @@ public class AbstractSocketTest {
 
     int intputTopic = 9999;
 
-    abstractSocket = new ConcreteSocket((byte)0, (byte)0, topics, 0, null);
+    abstractSocket = new ConcreteSocket((byte)0, (byte)0, topics, 0, InetAddress.getByName("224.0.0.0"));
     boolean actual = abstractSocket.isSubscribedToTopic(intputTopic);
 
     assertFalse(actual);
