@@ -16,9 +16,10 @@ public class SocketFactory {
    * @return The specified socket instance in the properties.
    * @throws IOException If an exception occurs creating the socket.
    * @throws InvalidPropertiesException If the specified socket type does not match with any of the
-   * defined socket types.
+   *     defined socket types.
    */
-  public static AbstractSocket createSocket(Configuration configuration) throws IOException, InvalidPropertiesException {
+  public static AbstractSocket createSocket(Configuration configuration) throws IOException,
+          InvalidPropertiesException {
     byte socketType = configuration.getSocketMode();
     AbstractSocket socket;
 
