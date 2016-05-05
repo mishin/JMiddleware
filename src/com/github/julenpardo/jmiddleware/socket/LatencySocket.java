@@ -2,6 +2,7 @@ package com.github.julenpardo.jmiddleware.socket;
 
 import com.github.julenpardo.jmiddleware.packetconstructor.InvalidPacketException;
 import com.github.julenpardo.jmiddleware.packetconstructor.PacketConstructor;
+import com.github.julenpardo.jmiddleware.properties.Configuration;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -18,11 +19,22 @@ public class LatencySocket extends AbstractSocket {
    * @param topics      Topic list read from properties.
    * @param port        Listening port read from properties.
    * @param multicastIp Multicast IP read from properties.
-   * @throws IOException Thrown by super MulticastSocket constructor.
+   * @throws IOException If an exception occurs calling super constructor, or joining multicast.
    */
   public LatencySocket(byte userType, byte socketType, ArrayList<Integer> topics, int port,
                        InetAddress multicastIp) throws IOException {
     super(userType, socketType, topics, port, multicastIp);
+  }
+
+  /**
+   * AbstractSocket constructor, receiving the configuratoin object instead of all the properties
+   * one by one.
+   *
+   * @param configuration The configuration object with the properties read from properties file.
+   * @throws IOException If an exception occurs calling super constructor, or joining multicast.
+   */
+  public LatencySocket(Configuration configuration) throws IOException {
+    super(configuration);
   }
 
   /**

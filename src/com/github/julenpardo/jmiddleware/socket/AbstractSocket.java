@@ -1,6 +1,8 @@
 package com.github.julenpardo.jmiddleware.socket;
 
 
+import com.github.julenpardo.jmiddleware.properties.Configuration;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -26,7 +28,7 @@ public abstract class AbstractSocket extends MulticastSocket {
    * @param topics Topic list read from properties.
    * @param port Listening port read from properties.
    * @param multicastIp Multicast IP read from properties.
-   * @throws IOException Thrown by super MulticastSocket constructor.
+   * @throws IOException If an exception occurs calling super constructor, or joining multicast.
    */
   public AbstractSocket(byte userType, byte socketType, ArrayList<Integer> topics, int port,
                         InetAddress multicastIp) throws IOException {
@@ -36,6 +38,24 @@ public abstract class AbstractSocket extends MulticastSocket {
     this.topics = topics;
     this.port = port;
     this.multicastIp = multicastIp;
+
+    super.joinGroup(multicastIp);
+  }
+
+  /**
+   * AbstractSocket constructor, receiving the configuratoin object instead of all the properties
+   * one by one.
+   *
+   * @param configuration The configuration object with the properties read from properties file.
+   * @throws IOException If an exception occurs calling super constructor, or joining multicast.
+   */
+  public AbstractSocket(Configuration configuration) throws IOException {
+    super(configuration.getPort());
+    this.userType = configuration.getUserMode();
+    this.socketType = configuration.getSocketMode();
+    this.topics = configuration.getTopics();
+    this.port = configuration.getPort();
+    this.multicastIp = configuration.getMulticastIp();
 
     super.joinGroup(multicastIp);
   }
