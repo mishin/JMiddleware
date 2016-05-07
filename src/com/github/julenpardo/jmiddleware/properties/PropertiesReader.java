@@ -23,11 +23,15 @@ public class PropertiesReader {
 
   /**
    * PropertiesReader constructor.
-   * @throws FileNotFoundException If an exception occurs with the file input stream.
+   * @throws InvalidPropertiesException If an exception occurs reading the properties file.
    */
-  public PropertiesReader() throws FileNotFoundException {
-    this.properties = new Properties();
-    this.input = new FileInputStream(this.PROPERTIES_FILENAME);
+  public PropertiesReader() throws InvalidPropertiesException {
+    try {
+      this.properties = new Properties();
+      this.input = new FileInputStream(this.PROPERTIES_FILENAME);
+    } catch (FileNotFoundException exception) {
+      throw new InvalidPropertiesException("Properties file missing!");
+    }
   }
 
   /**
@@ -65,7 +69,7 @@ public class PropertiesReader {
     PropertiesChecker.checkUserMode(userMode);
     PropertiesChecker.checkSocketMode(socketMode);
     PropertiesChecker.checkPort(port);
-    PropertiesChecker.checkMulticastIp(multicastIp.getHostName());
+    PropertiesChecker.checkMulticastIp(this.properties.getProperty(this.PROPERTIES_MULTICAST_IP));
 
     configuration = new Configuration(userMode, socketMode, topicList, port, multicastIp);
 

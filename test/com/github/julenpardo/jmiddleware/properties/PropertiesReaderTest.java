@@ -77,7 +77,10 @@ public class PropertiesReaderTest {
 
   @Test
   public void parseTopicsTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
-          FileNotFoundException {
+          FileNotFoundException, InvalidPropertiesException {
+    Generator generator = new Generator();
+    generator.createPropertiesFile(PropertiesReader.PROPERTIES_FILENAME, new HashMap());
+
     PropertiesReader propertiesReader = new PropertiesReader();
     String input = "12,3,65, 10 , 5";
     ArrayList<Integer> expecteds = new ArrayList<Integer>();
@@ -93,6 +96,8 @@ public class PropertiesReaderTest {
     ArrayList<Integer> actuals = (ArrayList<Integer>) method.invoke(propertiesReader, input);
 
     assertArrayEquals(expecteds.toArray(), actuals.toArray());
+
+    generator.deletePropertiesFile(PropertiesReader.PROPERTIES_FILENAME);
   }
 
 }
