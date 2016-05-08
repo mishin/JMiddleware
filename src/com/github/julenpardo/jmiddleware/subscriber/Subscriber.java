@@ -4,7 +4,6 @@ import com.github.julenpardo.jmiddleware.properties.Configuration;
 import com.github.julenpardo.jmiddleware.properties.InvalidPropertiesException;
 import com.github.julenpardo.jmiddleware.properties.PropertiesReader;
 import com.github.julenpardo.jmiddleware.socket.AbstractSocket;
-import com.github.julenpardo.jmiddleware.socket.NotSubscribedToTopicException;
 import com.github.julenpardo.jmiddleware.socketfactory.SocketFactory;
 
 import java.io.IOException;
