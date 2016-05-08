@@ -1,5 +1,6 @@
 package com.github.julenpardo.jmiddleware.socket;
 
+import com.github.julenpardo.jmiddleware.ListeningMulticastSocket;
 import com.github.julenpardo.jmiddleware.packetconstructor.InvalidPacketException;
 import com.github.julenpardo.jmiddleware.packetconstructor.PacketConstructor;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class LatencySocketTest {
 
     latencySocket = new LatencySocket(userType, socketType, topics, port, multicastIp);
 
-    ListeningSocket listeningSocket = new ListeningSocket(port, multicastIp, 25000);
+    ListeningMulticastSocket listeningSocket = new ListeningMulticastSocket(port, multicastIp, 25000);
     listeningSocket.start();
 
     latencySocket.sendData(inputTopic, inputData);
@@ -123,42 +124,6 @@ public class LatencySocketTest {
 
     // And we do the assertion.
     assertEquals(new String(expectedData), new String(actualData));
-  }
-
-  private class ListeningSocket extends Thread {
-    private MulticastSocket socket;
-    private int timeout;
-    private byte[] buffer;
-    private DatagramPacket packet;
-
-    public ListeningSocket(int port, InetAddress multicastIp, int timeout) {
-      try {
-        this.socket = new MulticastSocket(port);
-        this.timeout = timeout;
-        socket.joinGroup(multicastIp);
-        this.buffer = new byte[256];
-        this.packet = new DatagramPacket(this.buffer, this.buffer.length);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-
-    public DatagramPacket getPacket() {
-      return packet;
-    }
-
-    @Override
-    public void run() {
-      try {
-        Thread.sleep(this.timeout);
-        socket.receive(this.packet);
-
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
   }
 
   private class ListeningLatencySocket extends Thread {
