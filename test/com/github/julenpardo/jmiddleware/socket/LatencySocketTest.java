@@ -1,5 +1,6 @@
 package com.github.julenpardo.jmiddleware.socket;
 
+import com.github.julenpardo.jmiddleware.ListeningJMiddlewareSocket;
 import com.github.julenpardo.jmiddleware.ListeningMulticastSocket;
 import com.github.julenpardo.jmiddleware.packetconstructor.InvalidPacketException;
 import com.github.julenpardo.jmiddleware.packetconstructor.PacketConstructor;
@@ -108,8 +109,10 @@ public class LatencySocketTest {
     byte[] data = PacketConstructor.createPacket(socketType, userType, inputTopic, messageData);
     DatagramPacket packet = new DatagramPacket(data, data.length, multicastIp, port);
 
-    ListeningLatencySocket listeningLatencySocket = new ListeningLatencySocket(userType,
-            socketType, topics, port, multicastIp, 25000, inputTopic);
+    LatencySocket latencySocket = new LatencySocket(userType, socketType, topics, port, multicastIp);
+
+    ListeningJMiddlewareSocket listeningLatencySocket = new ListeningJMiddlewareSocket(latencySocket,
+            inputTopic, 25000);
     listeningLatencySocket.start();
 
     multicastSocket.send(packet);
@@ -124,40 +127,6 @@ public class LatencySocketTest {
 
     // And we do the assertion.
     assertEquals(new String(expectedData), new String(actualData));
-  }
-
-  private class ListeningLatencySocket extends Thread {
-    private LatencySocket latencySocket;
-    private int timeout;
-    private byte[] receivedData;
-    private int topic;
-
-    public ListeningLatencySocket(byte userType, byte socketType, ArrayList<Integer> topics,
-                                        int port, InetAddress multicastIp, int timeout, int topic) {
-      try {
-        this.latencySocket = new LatencySocket(userType, socketType, topics, port, multicastIp);
-        this.timeout = timeout;
-        this.topic = topic;
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-
-    public byte[] getReceivedData() {
-      return receivedData;
-    }
-
-    @Override
-    public void run() {
-      try {
-        Thread.sleep(this.timeout);
-        this.receivedData = latencySocket.receiveData(topic);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
   }
 
 }
