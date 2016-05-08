@@ -98,6 +98,6 @@ public abstract class AbstractSocket extends MulticastSocket {
    *
    * @return The byte array with recived data.
    */
-  public abstract byte[] receiveData() throws IOException;
+  public abstract byte[] receiveData(int topic) throws IOException;
 
 }

@@ -27,7 +27,7 @@ public class AbstractSocketTest {
     }
 
     @Override
-    public byte[] receiveData() {
+    public byte[] receiveData(int topic) {
       return null;
     }
   }
