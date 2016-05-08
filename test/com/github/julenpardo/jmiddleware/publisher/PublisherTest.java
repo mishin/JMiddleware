@@ -1,6 +1,7 @@
 package com.github.julenpardo.jmiddleware.publisher;
 
 import com.github.julenpardo.jmiddleware.Generator;
+import com.github.julenpardo.jmiddleware.ListeningMulticastSocket;
 import com.github.julenpardo.jmiddleware.packetconstructor.InvalidPacketException;
 import com.github.julenpardo.jmiddleware.packetconstructor.PacketConstructor;
 import com.github.julenpardo.jmiddleware.properties.InvalidPropertiesException;
@@ -12,7 +13,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.net.MulticastSocket;
 import java.util.HashMap;
 
 import static junit.framework.TestCase.assertEquals;
@@ -63,7 +63,7 @@ public class PublisherTest {
 
     Publisher publisher = new Publisher();
 
-    ListeningSocket listeningSocket = new ListeningSocket(60000,
+    ListeningMulticastSocket listeningSocket = new ListeningMulticastSocket(60000,
             InetAddress.getByName("224.0.0.0"), 25000);
     listeningSocket.start();
 
@@ -84,39 +84,4 @@ public class PublisherTest {
     generator.deletePropertiesFile(filename);
   }
 
-  private class ListeningSocket extends Thread {
-    private MulticastSocket socket;
-    private int timeout;
-    private byte[] buffer;
-    private DatagramPacket packet;
-
-    public ListeningSocket(int port, InetAddress multicastIp, int timeout) {
-      try {
-        this.socket = new MulticastSocket(port);
-        this.timeout = timeout;
-        socket.joinGroup(multicastIp);
-        this.buffer = new byte[256];
-        this.packet = new DatagramPacket(this.buffer, this.buffer.length);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-
-    public DatagramPacket getPacket() {
-      return packet;
-    }
-
-    @Override
-    public void run() {
-      try {
-        Thread.sleep(this.timeout);
-        socket.receive(this.packet);
-
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-  }
 }
