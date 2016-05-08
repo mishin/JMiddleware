@@ -108,7 +108,7 @@ public class LatencySocketTest {
     DatagramPacket packet = new DatagramPacket(data, data.length, multicastIp, port);
 
     ListeningLatencySocket listeningLatencySocket = new ListeningLatencySocket(userType,
-            socketType, topics, port, multicastIp, 25000);
+            socketType, topics, port, multicastIp, 25000, inputTopic);
     listeningLatencySocket.start();
 
     multicastSocket.send(packet);
@@ -165,12 +165,14 @@ public class LatencySocketTest {
     private LatencySocket latencySocket;
     private int timeout;
     private byte[] receivedData;
+    private int topic;
 
     public ListeningLatencySocket(byte userType, byte socketType, ArrayList<Integer> topics,
-                                        int port, InetAddress multicastIp, int timeout) {
+                                        int port, InetAddress multicastIp, int timeout, int topic) {
       try {
         this.latencySocket = new LatencySocket(userType, socketType, topics, port, multicastIp);
         this.timeout = timeout;
+        this.topic = topic;
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -184,7 +186,7 @@ public class LatencySocketTest {
     public void run() {
       try {
         Thread.sleep(this.timeout);
-        this.receivedData = latencySocket.receiveData();
+        this.receivedData = latencySocket.receiveData(topic);
       } catch (InterruptedException e) {
         e.printStackTrace();
       } catch (IOException e) {

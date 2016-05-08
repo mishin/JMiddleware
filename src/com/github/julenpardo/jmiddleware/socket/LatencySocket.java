@@ -66,33 +66,34 @@ public class LatencySocket extends AbstractSocket {
    * subscribed to. If a message of a non-subscribed topic is received, it will be ignored and
    * the loop will continue as if nothing happened.
    *
+   * @param topic The topic to receive the message of.
    * @return The byte array with received data.
    * @throws IOException If an exception occurs receiving the packet.
    */
   @Override
-  public byte[] receiveData() throws IOException {
+  public byte[] receiveData(int topic) throws IOException {
     byte[] buffer = new byte[super.BUFFER_SIZE];
     DatagramPacket receivedPacket = new DatagramPacket(buffer, buffer.length);
     byte[] receivedData = null;
-    int topic;
-    boolean isSubscribedTopic = false;
+    int receivedTopic;
+    boolean isSpecifiedTopic = false;
 
     do {
       super.receive(receivedPacket);
 
       try {
-        topic = PacketConstructor.getTopic(receivedPacket.getData());
+        receivedTopic = PacketConstructor.getTopic(receivedPacket.getData());
 
-        isSubscribedTopic = super.isSubscribedToTopic(topic);
+        isSpecifiedTopic = receivedTopic == topic;
 
-        if (isSubscribedTopic) {
+        if (isSpecifiedTopic) {
           receivedData = PacketConstructor.getData(receivedPacket.getData());
         }
 
       } catch (InvalidPacketException exception) {
-        isSubscribedTopic = false;
+        isSpecifiedTopic = false;
       }
-    } while (!isSubscribedTopic);
+    } while (!isSpecifiedTopic);
 
     return receivedData;
   }
