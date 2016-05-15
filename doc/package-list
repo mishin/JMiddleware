@@ -1,0 +1,8 @@
+com.github.julenpardo.jmiddleware.packetconstructor
+com.github.julenpardo.jmiddleware.properties
+com.github.julenpardo.jmiddleware.publisher
+com.github.julenpardo.jmiddleware.socket
+com.github.julenpardo.jmiddleware.socketfactory
+com.github.julenpardo.jmiddleware.subscriber
+publisher.com.github.julenpardo.jmiddleware.examples.publisher
+subscriber.com.github.julenpardo.jmiddleware.examples.subscriber
