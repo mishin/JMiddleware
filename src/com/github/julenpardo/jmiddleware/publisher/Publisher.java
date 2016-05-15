@@ -17,21 +17,23 @@ public class Publisher {
   /**
    * Publisher constructor.
    *
+   * @param configurationFilePath The path to the configuration file.
    * @throws IOException If an error occurs instantiating the socket.
    * @throws InvalidPropertiesException If the properties file has some error.
    */
-  public Publisher() throws IOException, InvalidPropertiesException {
-    this.initialize();
+  public Publisher(String configurationFilePath) throws IOException, InvalidPropertiesException {
+    this.initialize(configurationFilePath);
   }
 
   /**
    * Initializes the publisher, reading the configuration file and instantiating the socket.
    *
+   * @param configurationFilePath The path to the configuration file.
    * @throws IOException If an error occurs instantiating the socket.
    * @throws InvalidPropertiesException If the properties file has some error.
    */
-  private void initialize() throws IOException, InvalidPropertiesException {
-    PropertiesReader propertiesReader = new PropertiesReader();
+  private void initialize(String configurationFilePath) throws IOException, InvalidPropertiesException {
+    PropertiesReader propertiesReader = new PropertiesReader(configurationFilePath);
 
     this.configuration = propertiesReader.readProperties();
 

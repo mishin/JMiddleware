@@ -22,7 +22,7 @@ public class SubscriberTest {
   @Test
   public void testInitialize() throws IOException, InvalidPropertiesException {
     Generator generator = new Generator();
-    String filename = PropertiesReader.PROPERTIES_FILENAME;
+    String filename = "config.properites";
     HashMap<String, String> properties = new HashMap<String, String>();
 
     properties.put(PropertiesReader.PROPERTIES_SOCKET_MODE, String.valueOf(SocketTypes.LATENCY));
@@ -33,7 +33,7 @@ public class SubscriberTest {
 
     generator.createPropertiesFile(filename, properties);
 
-    Subscriber subscriber = new Subscriber();
+    Subscriber subscriber = new Subscriber(filename);
 
     generator.deletePropertiesFile(filename);
   }
@@ -41,13 +41,13 @@ public class SubscriberTest {
   @Test(expected = InvalidPropertiesException.class)
   public void testInitializeInvalidPropertiesException() throws IOException,
           InvalidPropertiesException {
-    new Subscriber();
+    new Subscriber("this file does not exist");
   }
 
   @Test(timeout = 35000)
   public void testGetLastSample() throws IOException, InvalidPropertiesException, InterruptedException {
     Generator generator = new Generator();
-    String filename = PropertiesReader.PROPERTIES_FILENAME;
+    String filename = "config.properties";
     HashMap<String, String> properties = new HashMap<String, String>();
 
     String inputMessage = "Testing get last sample method of subscriber!";
@@ -60,7 +60,7 @@ public class SubscriberTest {
 
     generator.createPropertiesFile(filename, properties);
 
-    Subscriber subscriber = new Subscriber();
+    Subscriber subscriber = new Subscriber(filename);
 
     int inputTopic = 200;
     int port = 60000;
@@ -87,5 +87,7 @@ public class SubscriberTest {
     byte[] expectedData = inputMessage.getBytes();
 
     assertEquals(new String(expectedData), new String(actualData));
+
+    generator.deletePropertiesFile(filename);
   }
 }

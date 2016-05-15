@@ -22,7 +22,7 @@ public class PublisherTest {
   @Test
   public void testInitialize() throws IOException, InvalidPropertiesException {
     Generator generator = new Generator();
-    String filename = PropertiesReader.PROPERTIES_FILENAME;
+    String filename = "config.properties";
     HashMap<String, String> properties = new HashMap<String, String>();
 
     properties.put(PropertiesReader.PROPERTIES_SOCKET_MODE, String.valueOf(SocketTypes.LATENCY));
@@ -33,7 +33,7 @@ public class PublisherTest {
 
     generator.createPropertiesFile(filename, properties);
 
-    Publisher publisher = new Publisher();
+    Publisher publisher = new Publisher(filename);
 
     generator.deletePropertiesFile(filename);
   }
@@ -41,14 +41,14 @@ public class PublisherTest {
   @Test(expected = InvalidPropertiesException.class)
   public void testInitializeInvalidPropertiesException() throws IOException,
           InvalidPropertiesException {
-    new Publisher();
+    new Publisher("config.properties");
   }
 
   @Test(timeout = 35000)
   public void testPublish() throws IOException, InvalidPropertiesException, InterruptedException,
           NotSubscribedToTopicException, InvalidPacketException {
     Generator generator = new Generator();
-    String filename = PropertiesReader.PROPERTIES_FILENAME;
+    String filename = "config.properties";
     HashMap<String, String> properties = new HashMap<String, String>();
 
     String inputMessage = "Testing publish method of publisher!";
@@ -61,7 +61,7 @@ public class PublisherTest {
 
     generator.createPropertiesFile(filename, properties);
 
-    Publisher publisher = new Publisher();
+    Publisher publisher = new Publisher(filename);
 
     ListeningMulticastSocket listeningSocket = new ListeningMulticastSocket(60000,
             InetAddress.getByName("224.0.0.0"), 25000);

@@ -9,7 +9,7 @@ import java.io.IOException;
 public class ExamplePublisher extends Publisher {
 
     public ExamplePublisher() throws IOException, InvalidPropertiesException {
-
+        super("config.properties");
     }
 
     public static void main(String args[]) {
