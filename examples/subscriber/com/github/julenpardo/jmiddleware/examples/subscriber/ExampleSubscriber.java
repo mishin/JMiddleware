@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class ExampleSubscriber extends Subscriber {
     public ExampleSubscriber() throws IOException, InvalidPropertiesException {
-
+        super("config.properties");
     }
 
     public static void main(String[] args) {

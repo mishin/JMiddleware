@@ -26,7 +26,7 @@ public class PropertiesReaderTest {
 
   @Test
   public void testReadProperties() {
-    String filename = PropertiesReader.PROPERTIES_FILENAME;
+    String filename = "config.properties";
     PropertiesReader propertiesReader;
     HashMap<String, String> properties = new HashMap<String, String>();
     Configuration configuration;
@@ -46,7 +46,7 @@ public class PropertiesReaderTest {
       properties.put(PropertiesReader.PROPERTIES_MULTICAST_IP, expectedMulticastIp.getHostName());
 
       generator.createPropertiesFile(filename, properties);
-      propertiesReader = new PropertiesReader();
+      propertiesReader = new PropertiesReader(filename);
       configuration = propertiesReader.readProperties();
 
       // We construct the expected topic array list from the input string delimited by commas...
@@ -78,10 +78,11 @@ public class PropertiesReaderTest {
   @Test
   public void parseTopicsTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException,
           FileNotFoundException, InvalidPropertiesException {
+    String filename = "config.properties";
     Generator generator = new Generator();
-    generator.createPropertiesFile(PropertiesReader.PROPERTIES_FILENAME, new HashMap());
+    generator.createPropertiesFile(filename, new HashMap());
 
-    PropertiesReader propertiesReader = new PropertiesReader();
+    PropertiesReader propertiesReader = new PropertiesReader(filename);
     String input = "12,3,65, 10 , 5";
     ArrayList<Integer> expecteds = new ArrayList<Integer>();
     expecteds.add(12);
@@ -97,7 +98,7 @@ public class PropertiesReaderTest {
 
     assertArrayEquals(expecteds.toArray(), actuals.toArray());
 
-    generator.deletePropertiesFile(PropertiesReader.PROPERTIES_FILENAME);
+    generator.deletePropertiesFile(filename);
   }
 
 }

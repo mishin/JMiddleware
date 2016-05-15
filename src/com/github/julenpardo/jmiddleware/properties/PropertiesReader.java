@@ -10,7 +10,6 @@ import java.util.Properties;
 
 public class PropertiesReader {
 
-  public static final String PROPERTIES_FILENAME = "config.properties";
   public static final String PROPERTIES_USER_MODE = "userMode";
   public static final String PROPERTIES_SOCKET_MODE = "socketMode";
   public static final String PROPERTIES_TOPICS = "topics";
@@ -23,12 +22,14 @@ public class PropertiesReader {
 
   /**
    * PropertiesReader constructor.
+   *
+   * @param configurationFilePath The path to the configuration file.
    * @throws InvalidPropertiesException If an exception occurs reading the properties file.
    */
-  public PropertiesReader() throws InvalidPropertiesException {
+  public PropertiesReader(String configurationFilePath) throws InvalidPropertiesException {
     try {
       this.properties = new Properties();
-      this.input = new FileInputStream(this.PROPERTIES_FILENAME);
+      this.input = new FileInputStream(configurationFilePath);
     } catch (FileNotFoundException exception) {
       throw new InvalidPropertiesException("Properties file missing!");
     }

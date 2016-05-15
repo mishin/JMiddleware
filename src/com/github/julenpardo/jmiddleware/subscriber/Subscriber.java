@@ -19,8 +19,8 @@ public class Subscriber {
    * @throws IOException If an error occurs instantiating the socket.
    * @throws InvalidPropertiesException If the properties file has some error.
    */
-  public Subscriber() throws IOException, InvalidPropertiesException {
-    this.initialize();
+  public Subscriber(String configurationFilePath) throws IOException, InvalidPropertiesException {
+    this.initialize(configurationFilePath);
   }
 
   /**
@@ -29,8 +29,8 @@ public class Subscriber {
    * @throws IOException If an error occurs instantiating the socket.
    * @throws InvalidPropertiesException If the properties file has some error.
    */
-  private void initialize() throws IOException, InvalidPropertiesException {
-    PropertiesReader propertiesReader = new PropertiesReader();
+  private void initialize(String configurationFilePath) throws IOException, InvalidPropertiesException {
+    PropertiesReader propertiesReader = new PropertiesReader(configurationFilePath);
 
     this.configuration = propertiesReader.readProperties();
 
